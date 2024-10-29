@@ -1,0 +1,19 @@
+name: Trigger Website Build
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**'
+      - 'assets/**'
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger website build
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/username/website/dispatches \
+            -d '{"event_type": "blog_update"}'
